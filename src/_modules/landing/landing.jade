@@ -1,0 +1,19 @@
+mixin landing(spec)
+  - spec = spec || {}
+  - spec.__class = spec.__class || ''
+
+  div(class=spec.__class)&attributes(attributes)
+    p This is an example paragraph for the landing module
+
+mixin landing-nav(spec, src)
+  - spec = spec || {}
+  - spec.__class = spec.__class || ''
+
+  .small-logo(class=spec.__class)&attributes(attributes)
+    // img.logo(src="images/yeogurt-swirl.png", width="75px")
+    img.logo(src=src, width="50px")
+
+  .title-logo
+    p YummyRoads
+
+

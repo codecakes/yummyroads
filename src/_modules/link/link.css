@@ -1,0 +1,15 @@
+* {
+  border: 2px solid #f00;
+}
+a:link {
+  color: #f00;
+}
+a:visited {
+  color: #0f0;
+}
+a:hover {
+  color: #f0f;
+}
+a:active {
+  color: #00f;
+}
