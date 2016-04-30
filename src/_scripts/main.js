@@ -6,7 +6,7 @@
 import $ from 'jquery';
 import Link from '../_modules/link/link';
 import searchLoc from '../_modules/landing/landing';
-import getPlaces from '../_modules/places/places';
+import * as places from '../_modules/places/places';
 
 $(() => {
   new Link(); // Activate Link modules logic
@@ -17,7 +17,7 @@ $(() => {
       .then((val) => {
         let
           [lat, lng] = val,
-          placeRes = getPlaces(google);
+          placeRes = places.getPlaces(google);
 
         [lat, lng] = [parseFloat(lat), parseFloat(lng)];
         console.log(`lat ${lat} lng ${lng}` );
@@ -26,7 +26,8 @@ $(() => {
       }).catch((err) => {
         console.log(err);
       }).then((results) => {
-        console.log(results);
+        // console.log(results);
+        places.parseResult(results);
       }).catch((err) => {
         console.log(err);
       });
