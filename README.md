@@ -5,9 +5,7 @@ Generated on 2016-04-29 using
 
 ## Description
 
-This is an example readme file.
-Describe your site/app here.
-
+Food & Travel discovery and recommender service
 ## Technologies used
 
 JavaScript
