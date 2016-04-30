@@ -2,6 +2,7 @@ extends _layouts/base
 
 include _modules/link/link
 include _modules/landing/landing
+include _modules/places/places
 
 block content
   .container.landing-nav
@@ -14,4 +15,5 @@ block content
     // p
     //   img.logo(src="images/yeogurt-swirl.png", width="75px")
   +landing-search(id='search')
+  +places()
   code.version v1.5.2

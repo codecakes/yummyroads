@@ -6,18 +6,34 @@
 import $ from 'jquery';
 import Link from '../_modules/link/link';
 import searchLoc from '../_modules/landing/landing';
+import getPlaces from '../_modules/places/places';
 
 $(() => {
   new Link(); // Activate Link modules logic
-  document.getElementById('searchgo').addEventListener('click', () => {
-    searchLoc()
-    .then((val) => {
-      let [lat, lng] = val;
-      console.log(`lat ${lat} lng ${lng}` );
-    })
-    .catch((err) => {
-      console.log(err);
+
+  (locationService => {
+    document.getElementById('searchgo').addEventListener('click', () => {
+      searchLoc()
+      .then((val) => {
+        let
+          [lat, lng] = val,
+          placeRes = getPlaces(google);
+
+        [lat, lng] = [parseFloat(lat), parseFloat(lng)];
+        console.log(`lat ${lat} lng ${lng}` );
+
+        return placeRes(lat, lng, 'restaurant');
+      }).catch((err) => {
+        console.log(err);
+      }).then((results) => {
+        console.log(results);
+      }).catch((err) => {
+        console.log(err);
+      });
     });
-  });
-  console.log('All systems green');
+
+    console.log('All systems green');
+  })();
+
+
 });

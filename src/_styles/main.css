@@ -1,6 +1,6 @@
 @import '../../node_modules/normalize.css/normalize.css';
 * {
-  border: 2px solid #f00;
+  border: 1px solid #f00;
 }
 a:link {
   color: #f00;
@@ -16,9 +16,27 @@ a:active {
 }
 .landing-nav {
   text-align: left;
-  max-width: 500px;
+  max-width: 300px;
+  max-height: 100px;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 5px;
+  margin-right: auto;
+  flex-wrap: wrap;
+  display: flex;
+}
+.search-place {
+  text-align: center;
+  max-width: 200px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 20px;
+}
+.search-place #searchgo {
+  color: #00f;
+}
+#map {
+  height: 100%;
 }
 *,
 *:before,
