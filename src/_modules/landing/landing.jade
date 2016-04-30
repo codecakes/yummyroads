@@ -16,4 +16,10 @@ mixin landing-nav(spec, src)
   .title-logo
     p YummyRoads
 
+mixin landing-search(spec)
+  - spec = spec || {}
+  - spec.__class = spec.__class || ''
 
+  .search-place(class=spec.__class)&attributes(attributes)
+    input(type='search', value='Search for a Place')
+    button(id='searchgo') Go
