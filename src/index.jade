@@ -4,6 +4,8 @@ include _modules/link/link
 include _modules/landing/landing
 include _modules/places/places
 
++w3css()
+
 block content
   .container.landing-nav
     +landing-nav(null, "./images/yeogurt-swirl.png")
@@ -17,5 +19,5 @@ block content
   +landing-search(id='search')
   +places()
 
-  .responseResults
+  +responseResults()
   // code.version v1.5.2

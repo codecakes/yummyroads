@@ -3,3 +3,17 @@
   margin: 0;
   padding: 0;
 }
+.responseResults ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+.slider-holder {
+  width: 800px;
+  height: 400px;
+  background-color: #808080;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  text-align: center;
+  overflow: hidden;
+}
