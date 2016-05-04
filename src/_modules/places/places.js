@@ -123,15 +123,14 @@ const
 
   createSlider = (responseArr) => {
     let
-      responseFrag = document.createDocumentFragment(),
       divImgFrag = document.createDocumentFragment(),
       btnFrag = document.createDocumentFragment(),
-
-      span, img, btnHref,
+      btnHref,
 
       fragment = parseResult(responseArr),
       divResImgHolder = Array.from(fragment.children),
       ln = divResImgHolder.length,
+
       responseResults = document.getElementsByClassName('responseResults')[0],
       divImgHolder = responseResults.getElementsByClassName('div-img-holder')[0],
       btnHolder = responseResults.getElementsByClassName('button-holder')[0];
@@ -142,15 +141,9 @@ const
     divImgHolder.style.width = `${Math.ceil(ln * 800)}px`;
 
     // populate data in frames
-
     divResImgHolder.forEach( (e, index) => {
-      // span = document.createElement('span');
-      // idName = 'slider-'+'div-'+index;
-      // span.id = idName;
-      // span.className += ' span-slider';
 
       try {
-        // responseFrag.appendChild(span);
 
         e.className += ' slider-image card';
         divImgFrag.appendChild(e);
@@ -171,7 +164,6 @@ const
     }
 
     try {
-      // responseResults.insertBefore(responseFrag, divImgHolder);
       divImgHolder.appendChild(divImgFrag);
       btnHolder.appendChild(btnFrag);
     }
