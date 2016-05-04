@@ -40,7 +40,7 @@ const
 
         map = new google.maps.Map(document.getElementById('map'), {
           center: place,
-          zoom: 15
+          // zoom: 15
         });
 
         infowindow = new google.maps.InfoWindow();
@@ -49,7 +49,7 @@ const
         return new Promise((resolve, reject) => {
           service.nearbySearch(request, function callback(results, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
-              console.log('found % results', results.length);
+              console.log(`found ${results.length} results`);
               results.forEach((result) => {
                 createMarker(result);
               });
@@ -68,17 +68,15 @@ const
 
   parseResult = function parseResult (responseArr) {
     const
-      fragment = document.createDocumentFragment(),
-      ulFrag = document.createElement('ul'),
-      responseResults = document.getElementsByClassName('responseResults')[0];
-    let div, li, h3, logo, logodiv, p, photo, tmp, photodiv;
+      fragment = document.createDocumentFragment();
+    let
+      div, li, h3, logo, logodiv, p, photo, tmp, photodiv;
 
     responseArr.forEach((obj) => {
       // console.log(obj);
       h3 = document.createElement('h3');
       logo = document.createElement('img');
       p = document.createElement('p');
-      li = document.createElement('li');
       div = document.createElement('div');
       logodiv = document.createElement('div');
 
@@ -109,53 +107,94 @@ const
         div.appendChild(p);
       }
 
-      li.appendChild(div);
-      fragment.appendChild(li);
+      fragment.appendChild(div);
     });
 
-    ulFrag.appendChild(fragment);
-    ulFrag.className+=' w3-ul w3-card-4 w3-center';
-    let divs = ulFrag.querySelectorAll('li > div');
+    // ulFrag.className+=' w3-ul w3-card-4 w3-center';
+    const divs = fragment.children;
     for (let i = 0,ln = divs.length; i<ln; i++) {
-      divs[i].className += ' w3-container w3-center w3-hover-green';
+      divs[i].className += ' w3-card-2 w3-hover-green';
       divs[i].id = 'search-result';
       divs[i].querySelector('h3').className += ' w3-red';
     }
-    responseResults.className += ' w3-card';
-    responseResults.appendChild(ulFrag);
 
+    return fragment;
   },
+
   createSlider = (responseArr) => {
     let
-      fragment = document.createDocumentFragment(),
-      spanSlider, img, divImgHolder, btnHolder, btnHref,
-      divFrag = parseResult(responseArr),
-      ln = divFrag.children.length,
-      divImgHolder = document.createElement('div'),
-      responseResults = document.getElementsByClassName('responseResults')[0];
+      responseFrag = document.createDocumentFragment(),
+      divImgFrag = document.createDocumentFragment(),
+      btnFrag = document.createDocumentFragment(),
 
-    responseResults.className += ' w3-card';
-    divImgHolder.className += ' div-img-holder';
+      span, img, btnHref,
 
-    for (let i=0, idName, childNodes = divFrag.children; i<ln; i++) {
-      spanSlider = document.createElement('span');
-      idName = 'slider-'+'div-'+i;
-      spanSlider.id = idName;
-      responseResults.appendChild(spanSlider);
+      fragment = parseResult(responseArr),
+      divResImgHolder = Array.from(fragment.children),
+      ln = divResImgHolder.length,
+      responseResults = document.getElementsByClassName('responseResults')[0],
+      divImgHolder = responseResults.getElementsByClassName('div-img-holder')[0],
+      btnHolder = responseResults.getElementsByClassName('button-holder')[0];
 
-      divImgHolder.appendChild(childNodes[i]);
+    // adjust the slider-holder width
+    // Fix the width of divImgHolder by calculating total div cards
+    // 3 div cards per slide
+    divImgHolder.style.width = `${Math.ceil(ln * 800)}px`;
 
+    // populate data in frames
+
+    divResImgHolder.forEach( (e, index) => {
+      // span = document.createElement('span');
+      // idName = 'slider-'+'div-'+index;
+      // span.id = idName;
+      // span.className += ' span-slider';
+
+      try {
+        // responseFrag.appendChild(span);
+
+        e.className += ' slider-image card';
+        divImgFrag.appendChild(e);
+        // console.log("divImgFrag works");
+        // console.log(e);
+      }
+      catch (err) {
+        console.error(err);
+        console.log(e);
+      }
+    });
+
+    for(let i=0, ln = divResImgHolder.length/2; i<ln; i++ ) {
       btnHref = document.createElement('a');
-      btnHref.href = '#'+idName;
-      btnHref.className += 'slider-change';
-      btnHolder.appendChild(btnHref);
+      btnHref.href = `#slider-div-${i}`;
+      btnHref.className += ' slider-change';
+      btnFrag.appendChild(btnHref);
     }
 
-    responseResults.appendChild(divImgHolder);
-    responseResults.appendChild(btnHolder);
+    try {
+      // responseResults.insertBefore(responseFrag, divImgHolder);
+      divImgHolder.appendChild(divImgFrag);
+      btnHolder.appendChild(btnFrag);
+    }
+    catch (e) {
+      console.error('appending frag to document error!');
+    }
+  },
 
-    // TODO: Fix the width of divImgHolder by calculating total div cards
-    // 3 div cards per slide
+  slideTransit = () => {
+    let
+      id, num=0,
+      slider = document.querySelector('.div-img-holder');
+
+    Array.from(document.getElementsByClassName('slider-change')).forEach((e) => {
+      e.addEventListener('click', function (evt) {
+        let that= this;
+        // id = evt.target.hash;
+        id = that.href;
+        // console.log(id);
+        num = parseInt(id[id.length - 1]) * -800;
+        slider.style.left = `${num}px`;
+      });
+    });
   };
 
-export default {getPlaces, parseResult};
+export default {getPlaces, createSlider, slideTransit};

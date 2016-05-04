@@ -3,8 +3,8 @@ mixin places(spec)
   - spec = spec || {}
   - spec.__class = spec.__class || ''
 
-  div(class=spec.__class)&attributes(attributes)
-    p This is an example paragraph for the places module
+  // div(class=spec.__class)&attributes(attributes)
+  //   p This is an example paragraph for the places module
   div(id='map')
 
 // mixin nearbyResponseCard(reponse)
@@ -24,5 +24,7 @@ mixin places(spec)
 
 mixin responseResults()
   .responseResults.slider-holder
+    .div-img-holder
+    .button-holder
 
 

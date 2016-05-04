@@ -27,7 +27,8 @@ $(() => {
         console.log(err);
       }).then((results) => {
         // console.log(results);
-        places.parseResult(results);
+        places.createSlider(results);
+        places.slideTransit();
       }).catch((err) => {
         console.log(err);
       });
