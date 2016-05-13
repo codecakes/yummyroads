@@ -122,18 +122,23 @@ const
   },
 
   createSlider = (responseArr) => {
+    // all about creating slider for div cards
     let
       divImgFrag = document.createDocumentFragment(),
-      btnFrag = document.createDocumentFragment(),
-      btnHref,
+      //ul fragment to add numbered pagination with pagination arrows
+      ulFrag = document.createDocumentFragment(),
+      li, btnHref,
 
       fragment = parseResult(responseArr),
+      // get each places div card results into the divResImgHolder
+      // Convert this HTMLDom Object into an array
       divResImgHolder = Array.from(fragment.children),
       ln = divResImgHolder.length,
 
-      responseResults = document.getElementsByClassName('responseResults')[0],
+      // select slider window divimg holder and btn holder classes
+      responseResults = document.getElementsByClassName('responseResults slider-holder')[0],
       divImgHolder = responseResults.getElementsByClassName('div-img-holder')[0],
-      btnHolder = responseResults.getElementsByClassName('button-holder')[0];
+      ulHolder = responseResults.getElementsByClassName('button-holder')[0];
 
     // adjust the slider-holder width
     // Fix the width of divImgHolder by calculating total div cards
@@ -156,16 +161,39 @@ const
       }
     });
 
-    for(let i=0, ln = divResImgHolder.length/2; i<ln; i++ ) {
+    // create back link
+    li = document.createElement('li');
+    btnHref = document.createElement('a');
+    btnHref.href = '#';
+    btnHref.textContent = 'Previous';
+    btnHref.className += ' slider-change';
+    // btnFrag.appendChild(btnHref);
+    li.appendChild(btnHref);
+    ulFrag.appendChild(li);
+    for(let i=0, ln = divResImgHolder.length%5; i<ln; i++ ) {
+      li = document.createElement('li');
       btnHref = document.createElement('a');
       btnHref.href = `#slider-div-${i}`;
+      btnHref.textContent = `${i}`;
       btnHref.className += ' slider-change';
-      btnFrag.appendChild(btnHref);
+      // btnFrag.appendChild(btnHref);
+      li.appendChild(btnHref);
+      ulFrag.appendChild(li);
     }
+    // create next link
+    li = document.createElement('li');
+    btnHref = document.createElement('a');
+    btnHref.href = '#';
+    btnHref.textContent = 'Next';
+    btnHref.className += ' slider-change';
+    // btnFrag.appendChild(btnHref);
+    li.appendChild(btnHref);
+    ulFrag.appendChild(li);
+
 
     try {
       divImgHolder.appendChild(divImgFrag);
-      btnHolder.appendChild(btnFrag);
+      ulHolder.appendChild(ulFrag);
     }
     catch (e) {
       console.error('appending frag to document error!');
@@ -173,17 +201,34 @@ const
   },
 
   slideTransit = () => {
+    // all about button click transition of div slider
     let
-      id, num=0,
-      slider = document.querySelector('.div-img-holder');
+      href, num=0,
+      slider = document.querySelector('.div-img-holder'),
+      sliderStyle = getComputedStyle(slider),
+      width = parseInt( sliderStyle.width.match(/[-+][0-9]+|[0-9]+/) );
 
     Array.from(document.getElementsByClassName('slider-change')).forEach((e) => {
       e.addEventListener('click', function (evt) {
         let that= this;
         // id = evt.target.hash;
-        id = that.href;
-        // console.log(id);
-        num = parseInt(id[id.length - 1]) * -800;
+        href = that.href;
+        href = href[href.length - 1];
+        // console.log(href);
+        // gets the href link number and yields multiple of frame width
+        num = parseInt( sliderStyle.left.match(/[-+][0-9]+|[0-9]+/) );
+        console.log(`num = ${num} width=${width} href=${href}`);
+        if (href === '#' && that.textContent === 'Previous') {
+          console.log(`Previous num = ${num}`);
+          num = (num+800 <= 0) === true? num+800:num;
+        }
+        else if (href === '#' && that.textContent === 'Next') {
+          console.log(`Next num = ${num}`);
+          num = (num-800 > parseInt(width/2) * -1 ) === true? num-800:num;
+        }
+        else {
+          num = parseInt(href) * -800;
+        }
         slider.style.left = `${num}px`;
       });
     });
