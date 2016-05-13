@@ -29,6 +29,7 @@ $(() => {
         // console.log(results);
         places.createSlider(results);
         places.slideTransit();
+        places.detailedCard();
       }).catch((err) => {
         console.log(err);
       });

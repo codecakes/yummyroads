@@ -1,14 +1,13 @@
 'use strict';
 
 const
+  Places = function Places() {
+    // this.name = 'places';
+    console.log('%s module loaded', 'places');
+  },
   getPlaces = function getPlaces (google) {
 
     let
-      Places = function Places() {
-        // this.name = 'places';
-        console.log('%s module loaded', 'places');
-      },
-
       map,
       service,
       infowindow,
@@ -61,8 +60,6 @@ const
           });
         });
       };
-
-    Places();
     return init;
   },
 
@@ -70,7 +67,7 @@ const
     const
       fragment = document.createDocumentFragment();
     let
-      div, li, h3, logo, logodiv, p, photo, tmp, photodiv;
+      div, li, h3, logo, logodiv, p, photo, tmp, photodiv, show;
 
     responseArr.forEach((obj) => {
       // console.log(obj);
@@ -107,16 +104,26 @@ const
         div.appendChild(p);
       }
 
+      show = document.createElement('a');
+      show.href = '#cardItem';
+      show.textContent += 'Click Me!';
+      show.className += 'w3-btn w3-orange';
+      div.appendChild(show);
+
+      div.className += ' w3-card-2 w3-hover-green';
+      div.id = 'search-result';
+      div.querySelector('h3').className += ' w3-red';
+
       fragment.appendChild(div);
     });
 
     // ulFrag.className+=' w3-ul w3-card-4 w3-center';
-    const divs = fragment.children;
-    for (let i = 0,ln = divs.length; i<ln; i++) {
-      divs[i].className += ' w3-card-2 w3-hover-green';
-      divs[i].id = 'search-result';
-      divs[i].querySelector('h3').className += ' w3-red';
-    }
+    // const divs = fragment.children;
+    // for (let i = 0,ln = divs.length; i<ln; i++) {
+    //   divs[i].className += ' w3-card-2 w3-hover-green';
+    //   divs[i].id = 'search-result';
+    //   divs[i].querySelector('h3').className += ' w3-red';
+    // }
 
     return fragment;
   },
@@ -217,13 +224,13 @@ const
         // console.log(href);
         // gets the href link number and yields multiple of frame width
         num = parseInt( sliderStyle.left.match(/[-+][0-9]+|[0-9]+/) );
-        console.log(`num = ${num} width=${width} href=${href}`);
+        // console.log(`num = ${num} width=${width} href=${href}`);
         if (href === '#' && that.textContent === 'Previous') {
-          console.log(`Previous num = ${num}`);
+          // console.log(`Previous num = ${num}`);
           num = (num+800 <= 0) === true? num+800:num;
         }
         else if (href === '#' && that.textContent === 'Next') {
-          console.log(`Next num = ${num}`);
+          // console.log(`Next num = ${num}`);
           num = (num-800 > parseInt(width/2) * -1 ) === true? num-800:num;
         }
         else {
@@ -232,6 +239,15 @@ const
         slider.style.left = `${num}px`;
       });
     });
+  },
+
+  detailedCard = () => {
+    let
+      p = document.querySelector('.detailedCard > p');
+
+    p.textContent += 'Yay!';
   };
 
-export default {getPlaces, createSlider, slideTransit};
+Places();
+
+export default {getPlaces, createSlider, slideTransit, detailedCard};
