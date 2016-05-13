@@ -1,7 +1,4 @@
 @import '../../node_modules/normalize.css/normalize.css';
-* {
-  border: 1px solid #f00;
-}
 a:link {
   color: #f00;
 }
@@ -27,18 +24,78 @@ a:active {
 }
 .search-place {
   text-align: center;
-  max-width: 200px;
+  max-width: 400px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
+}
+.search-place > input {
+  width: 300px;
 }
 .search-place #searchgo {
   color: #00f;
 }
 #map {
-  height: 100%;
+  height: 400px;
+  max-height: 500px;
   margin: 0;
   padding: 0;
+}
+.card {
+  width: 300px;
+  height: 333px;
+  max-width: 400px;
+  max-height: 333px;
+}
+.slider-holder {
+  width: 800px;
+  height: 500px;
+  background-color: transparent;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  text-align: center;
+  overflow: hidden;
+}
+.div-img-holder {
+  left: 0px;
+  width: 2400px;
+  height: 400px;
+  clear: both;
+  position: relative;
+  -webkit-transition: left 1s;
+  -moz-transition: left 1s;
+  -o-transition: left 1s;
+  transition: left 1s;
+}
+.slider-image {
+  float: left;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+  width: 800px;
+/*max-width: 800px;*/
+  max-height: 400px;
+}
+.slider-change {
+  display: inline-block;
+}
+.button-holder {
+  position: relative;
+  margin-top: 10px;
+}
+.detailedCard {
+  height: 100px;
+  clear: both;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+.detailedCard > p {
+  display: none;
+}
+.detailedCard > p:target {
+  display: block;
 }
 @import './w3.css';
 *,

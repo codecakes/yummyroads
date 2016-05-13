@@ -16,6 +16,9 @@
   margin-right: auto;
   margin-top: 20px;
 }
+.search-place > input {
+  width: 300px;
+}
 .search-place #searchgo {
   color: #00f;
 }

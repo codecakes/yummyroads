@@ -12,43 +12,45 @@ const
       service,
       infowindow,
 
-      createMarker = function createMarker(place) {
-        let
-          placeLoc = place.geometry.location,
-          marker = new google.maps.Marker({
-            map: map,
-            position: placeLoc,
-          });
-
-        google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(place.name);
-          infowindow.open(map, window);
-        });
-      },
-
       init = function initialize(lat, lng, typePlace, objArgs) {
+        infowindow = new google.maps.InfoWindow();
         let
           place = new google.maps.LatLng(lat,lng),
           request = {
             location: place,
             radius: '5000',
             type: [typePlace]
+          },
+          createMarker = function createMarker(place) {
+            let
+              placeLoc = place.geometry.location,
+              that = this,
+              marker = new google.maps.Marker({
+                map: map,
+                position: placeLoc,
+              });
+
+            google.maps.event.addListener(marker, 'click', function() {
+              infowindow.setContent(place.name);
+              infowindow.open(map, that);
+            });
           };
 
         Object.assign(request, objArgs);
 
         map = new google.maps.Map(document.getElementById('map'), {
           center: place,
-          // zoom: 15
+          zoom: 15
         });
 
-        infowindow = new google.maps.InfoWindow();
         service = new google.maps.places.PlacesService(map);
 
         return new Promise((resolve, reject) => {
           service.nearbySearch(request, function callback(results, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
+              // results = JSON.parse(JSON.stringify(results));
               console.log(`found ${results.length} results`);
+              // console.log(results);
               results.forEach((result) => {
                 createMarker(result);
               });
@@ -104,11 +106,11 @@ const
         div.appendChild(p);
       }
 
-      show = document.createElement('a');
-      show.href = '#cardItem';
-      show.textContent += 'Click Me!';
-      show.className += 'w3-btn w3-orange';
-      div.appendChild(show);
+      // show = document.createElement('a');
+      // show.href = '#cardItem';
+      // show.textContent += 'Click Me!';
+      // show.className += 'w3-btn w3-orange';
+      // div.appendChild(show);
 
       div.className += ' w3-card-2 w3-hover-green';
       div.id = 'search-result';
