@@ -8,11 +8,22 @@ import Link from '../_modules/link/link';
 import searchLoc from '../_modules/landing/landing';
 import * as places from '../_modules/places/places';
 
+
 $(() => {
+
+  (() => {
+    // makes life so much better esp w/ DOM
+    if (!window.jQuery) {
+      window.jQuery = $;
+    }
+  })();
+
   new Link(); // Activate Link modules logic
 
-  (locationService => {
-    document.getElementById('searchgo').addEventListener('click', () => {
+  // locationService
+  ($ => {
+    // document.getElementById('searchgo').addEventListener('click', () => {
+    $('#searchgo').click(() => {
       searchLoc()
       .then((val) => {
         let
@@ -27,16 +38,16 @@ $(() => {
         console.log(err);
       }).then((results) => {
         // console.log(results);
-        places.createSlider(results);
-        places.slideTransit();
-        places.detailedCard();
+        places.createSlider(results, $);
+        places.slideTransit($);
+        places.detailedCard($);
       }).catch((err) => {
         console.log(err);
       });
     });
 
     console.log('All systems green');
-  })();
+  })(window.jQuery);
 
 
 });
