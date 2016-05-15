@@ -50,7 +50,7 @@ const
             if (status == google.maps.places.PlacesServiceStatus.OK) {
               // results = JSON.parse(JSON.stringify(results));
               console.log(`found ${results.length} results`);
-              // console.log(results);
+              console.log(results);
               results.forEach((result) => {
                 createMarker(result);
               });
@@ -69,9 +69,9 @@ const
     const
       $fragment = $( document.createDocumentFragment() );
     let
-      $div, $h3, $logo, $logodiv, $p, $photo, $tmp, $photodiv;
+      $div, $h3, $logo, $logodiv, $p, $photo, $tmp, $photodiv, $show;
 
-    responseArr.forEach((obj) => {
+    responseArr.forEach( (obj, index) => {
       // console.log(obj);
       $h3 = $('<h3>');
       $logo = $('<img>');
@@ -88,7 +88,7 @@ const
       $div.append($logodiv);
 
       if (obj.photos) {
-        $photo = $('<img>');
+        $photo = $('<img>', {'class': 'w3-circle'});
         // console.log(tmp[0]);
         $tmp = obj.photos[0];
         $photo.attr('width', 200);
@@ -106,33 +106,25 @@ const
         $div.append($p);
       }
 
-      // show = document.createElement('a');
-      // show.href = '#cardItem';
-      // show.textContent += 'Click Me!';
-      // show.className += 'w3-btn w3-orange';
-      // div.appendChild(show);
-
       $div.addClass('w3-card-2 w3-hover-green');
       $div.attr('id', 'search-result');
       $div.find('h3').addClass('w3-red');
 
+      $div.append( $('<hr>') );
+      $show = $('<a>');
+      $show.attr('href',`#cardItem-${index}`);
+      $show.text('Show More');
+      $show.addClass('w3-btn w3-orange');
+      $div.append($show);
+
       $fragment.append($div);
     });
-
-    // ulFrag.className+=' w3-ul w3-card-4 w3-center';
-    // const divs = fragment.children;
-    // for (let i = 0,ln = divs.length; i<ln; i++) {
-    //   divs[i].className += ' w3-card-2 w3-hover-green';
-    //   divs[i].id = 'search-result';
-    //   divs[i].querySelector('h3').className += ' w3-red';
-    // }
-
 
     return $fragment;
   },
 
   createSlider = (responseArr, $) => {
-    // all about creating slider for div cards
+    // all about creating slider for div cards navigation
     let
       $divImgFrag = $( document.createDocumentFragment() ),
       //ul fragment to add numbered pagination with pagination arrows
@@ -226,11 +218,15 @@ const
         num = parseInt( $slider.css('left').match(/[-+][0-9]+|[0-9]+/) || 0 );
         // console.log(`num = ${num} width=${width} href=${href}`);
         if (href === '#' && $(that).text() === 'Previous') {
+          evt.stopPropagation();
+          evt.preventDefault();
           // console.log(`Previous num = ${num}`);
           num = (num+800 <= 0) === true? num+800:num;
         }
         else if (href === '#' && $(that).text() === 'Next') {
           // console.log(`Next num = ${num}`);
+          evt.stopPropagation();
+          evt.preventDefault();
           num = (num-800 > parseInt(width/2) * -1 ) === true? num-800:num;
         }
         else {
@@ -239,34 +235,53 @@ const
         $slider.css('left', `${num}px`);
       }.bind(element) );
     });
-    // Array.from(document.getElementsByClassName('slider-change')).forEach((e) => {
-    //   e.addEventListener('click', function (evt) {
-    //     let that= this;
-    //     // id = evt.target.hash;
-    //     href = that.href;
-    //     href = href[href.length - 1];
-    //     // console.log(href);
-    //     // gets the href link number and yields multiple of frame width
-    //     num = parseInt( sliderStyle.left.match(/[-+][0-9]+|[0-9]+/) );
-    //     // console.log(`num = ${num} width=${width} href=${href}`);
-    //     if (href === '#' && that.textContent === 'Previous') {
-    //       // console.log(`Previous num = ${num}`);
-    //       num = (num+800 <= 0) === true? num+800:num;
-    //     }
-    //     else if (href === '#' && that.textContent === 'Next') {
-    //       // console.log(`Next num = ${num}`);
-    //       num = (num-800 > parseInt(width/2) * -1 ) === true? num-800:num;
-    //     }
-    //     else {
-    //       num = parseInt(href) * -800;
-    //     }
-    //     slider.style.left = `${num}px`;
-    //   });
-    // });
   },
 
-  detailedCard = ($) => {
-    $('.detailedCard > p').text('Yay!');
+  detailedCard = (results, $) => {
+    const
+      $detailedCard = $('.detailedCard'),
+      $frag = $( document.createDocumentFragment() );
+    let $div, $name, $photo, $openStatus, $rating, $vicinity, $type;
+
+    $.each(results, (index, result) => {
+      $div = $('<div>', {'id':`cardItem-${index}`, 'class': 'w3-container w3-card-8'});
+
+      $name = $('<h3>', {'class':'w3-hover-shadow w3-blue'});
+      $name.text(`${result.name}`);
+      if (result.photos) {
+        $photo = $('<img>', {'src':result.photos[0].getUrl({maxHeight: 200, maxWidth: 200}), 'class': 'w3-center' });
+      }
+      else {
+        $photo = $('<img>', {'text':'Image not available'});
+      }
+
+      $openStatus = $('<p>', {'class': 'w3-blue w3-center'});
+      if (result.opening_hours) {
+        $openStatus.text(`Open?: ${result.opening_hours.open_now? 'Yes':'No' }`);
+      }
+      else {
+        $openStatus.text('Open?: Not Sure. Better Call \'em up!');
+      }
+
+      $rating = $('<p>', {'class': 'w3-dark-grey'});
+      $rating.text(`Rating: ${!!result.rating?result.rating:'No ratings yet!'}`);
+      $vicinity = $('<p>', {'class':'w3-center'});
+      $vicinity.text(`${result.vicinity}`);
+      $type = $('<p>');
+      $type.text(`${result.types[0]}`);
+
+      $div.append($name);
+      $div.append($type);
+      $div.append($photo);
+      $div.append($rating);
+      $div.append($vicinity);
+      $div.append($openStatus);
+
+      $frag.append( $div );
+      // $('.detailedCard > p').text('Yay!');
+    });
+
+    $detailedCard.append($frag);
   };
 
 Places();

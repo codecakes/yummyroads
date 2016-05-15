@@ -48,15 +48,15 @@
   margin-top: 10px;
 }
 .detailedCard {
-  height: 100px;
+  max-width: 800px;
   clear: both;
   margin-left: auto;
   margin-right: auto;
   position: relative;
 }
-.detailedCard > p {
+.detailedCard > div[id^='cardItem'] {
   display: none;
 }
-.detailedCard > p:target {
+.detailedCard > div[id^='cardItem']:target {
   display: block;
 }

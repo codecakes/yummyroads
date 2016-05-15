@@ -64,12 +64,13 @@
 // all about showing card results in detail and subsequent functions
 
 .detailedCard
-    height: 100px;
+    // height: 100px;
+    max-width 800px
     clear: both;
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    > p
+    > div[id^='cardItem']
       display: none
       &:target
           display:block

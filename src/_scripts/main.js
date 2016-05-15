@@ -40,7 +40,7 @@ $(() => {
         // console.log(results);
         places.createSlider(results, $);
         places.slideTransit($);
-        places.detailedCard($);
+        places.detailedCard(results, $);
       }).catch((err) => {
         console.log(err);
       });
