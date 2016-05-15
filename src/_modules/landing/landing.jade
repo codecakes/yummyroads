@@ -21,5 +21,5 @@ mixin landing-search(spec)
   - spec.__class = spec.__class || ''
 
   .search-place(class=spec.__class)&attributes(attributes)
-    input(type='search', placeholder='Search for a Place - bars in Delhi', id="input-query")
+    input(type='search', placeholder='Search for a Place - bars in Delhi', id="input-query", class='w3-input w3-border')
     button(id='searchgo') Find Me!

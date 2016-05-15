@@ -5,7 +5,7 @@
 
 import $ from 'jquery';
 import Link from '../_modules/link/link';
-import searchLoc from '../_modules/landing/landing';
+import * as landing from '../_modules/landing/landing';
 import * as places from '../_modules/places/places';
 
 
@@ -24,7 +24,7 @@ $(() => {
   ($ => {
     // document.getElementById('searchgo').addEventListener('click', () => {
     $('#searchgo').click(() => {
-      searchLoc()
+      landing.searchLoc()
       .then((val) => {
         let
           [lat, lng] = val,
@@ -34,14 +34,40 @@ $(() => {
         console.log(`lat ${lat} lng ${lng}` );
 
         return placeRes(lat, lng, 'restaurant');
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
-      }).then((results) => {
+      })
+      .then((results) => {
         // console.log(results);
         places.createSlider(results, $);
         places.slideTransit($);
-        places.detailedCard(results, $);
-      }).catch((err) => {
+
+        let
+          Promises = [],
+          ln = results.length, count = 0, result,
+          id = setInterval(() => {
+            if (count < ln) {
+              result = results[count];
+              Promises.push( places.placeDetails(result)(google, result) );
+              count++;
+            }
+            else {
+              clearInterval(id);
+              console.log('Promises');
+              Promise.all(Promises)
+              .then((promiseArr) => {
+                Promise.all(promiseArr)
+                .then( (Results) => {
+                  places.detailedCardAsync(Results, $, google);
+                }, (err) => {
+                  console.error(err);
+                });
+              });
+            }
+          }, 1000);
+      })
+      .catch((err) => {
         console.log(err);
       });
     });

@@ -141,6 +141,9 @@ const
       $divImgHolder = $responseResults.find('.div-img-holder'),
       $ulHolder = $responseResults.find('.button-holder');
 
+    $divImgHolder.empty();
+    $ulHolder.empty();
+    $('.detailedCard').empty();
     // adjust the slider-holder width
     // Fix the width of divImgHolder by calculating total div cards
     // 3 div cards per slide
@@ -150,6 +153,9 @@ const
     divResImgHolder.forEach( (e, index) => {
 
       try {
+
+        // div-img-holder can be generally shifted left in terms of n*-800px depending on which span number, n was selected
+        // $responseResults.append( $( '<span>', {'id':`slider-image-${index}`}) );
 
         $(e).addClass('slider-image card');
         $divImgFrag.append(e);
@@ -237,38 +243,82 @@ const
     });
   },
 
-  detailedCard = (results, $) => {
+  placeDetails = (placeObj) => {
+    // all about fetching detailed Places API from Google Places
+    let
+      init = function initialize(google, placeObj) {
+
+        const
+          map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: placeObj.geometry.location.lat(),
+                    lng: placeObj.geometry.location.lng()},
+            zoom: 15
+          }),
+          // infowindow = new google.maps.InfoWindow(),
+          service = new google.maps.places.PlacesService(map);
+
+        return new Promise( (resolve, reject) => {
+          service.getDetails({
+            placeId: placeObj.place_id
+          }, (place, status) => {
+            let that= this;
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+              // let marker = new google.maps.Marker({
+              //   map: map,
+              //   position: place.geometry.location
+              // });
+
+              // google.maps.event.addListener(marker, 'click', function() {
+              //   infowindow.setContent(`<div><strong> ${place.name} </strong><br> ${place.formatted_address} </div>`);
+              //   infowindow.open(map, that);
+              // });
+              resolve(place);
+            }
+            else {
+              reject(status);
+            }
+          });
+        });
+      };
+    return init;
+  },
+
+  detailedCardAsync = (Places, $, google) => {
+    // all about adding detailed cards to .detailedCard
+    console.log('insider detailedCardAsync. Places is');
+    console.log(Places);
+
     const
       $detailedCard = $('.detailedCard'),
       $frag = $( document.createDocumentFragment() );
-    let $div, $name, $photo, $openStatus, $rating, $vicinity, $type;
+    let
+      $div, $name, $photo, $openStatus, $rating, $vicinity, $type;
 
-    $.each(results, (index, result) => {
+    $.each(Places, (index, place) => {
       $div = $('<div>', {'id':`cardItem-${index}`, 'class': 'w3-container w3-card-8'});
-
       $name = $('<h3>', {'class':'w3-hover-shadow w3-blue'});
-      $name.text(`${result.name}`);
-      if (result.photos) {
-        $photo = $('<img>', {'src':result.photos[0].getUrl({maxHeight: 200, maxWidth: 200}), 'class': 'w3-center' });
+      $name.text(`${place.name}`);
+      if (place.photos) {
+        $photo = $('<img>', {'src':place.photos[0].getUrl({maxHeight: 200, maxWidth: 200}), 'class': 'w3-center' });
       }
       else {
         $photo = $('<img>', {'text':'Image not available'});
       }
 
       $openStatus = $('<p>', {'class': 'w3-blue w3-center'});
-      if (result.opening_hours) {
-        $openStatus.text(`Open?: ${result.opening_hours.open_now? 'Yes':'No' }`);
+      if (place.opening_hours) {
+        $openStatus.text(`Open?: ${place.opening_hours.open_now? 'Yes':'No' }`);
       }
       else {
         $openStatus.text('Open?: Not Sure. Better Call \'em up!');
       }
 
       $rating = $('<p>', {'class': 'w3-dark-grey'});
-      $rating.text(`Rating: ${!!result.rating?result.rating:'No ratings yet!'}`);
+      $rating.text(`Rating: ${!!place.rating?place.rating:'No ratings yet!'}`);
       $vicinity = $('<p>', {'class':'w3-center'});
-      $vicinity.text(`${result.vicinity}`);
+      $vicinity.text(`${place.vicinity}`);
       $type = $('<p>');
-      $type.text(`${result.types[0]}`);
+      $type.text(`${place.types[0]}`);
 
       $div.append($name);
       $div.append($type);
@@ -286,4 +336,5 @@ const
 
 Places();
 
-export default {getPlaces, createSlider, slideTransit, detailedCard};
+export default {getPlaces, createSlider, slideTransit, placeDetails, detailedCardAsync};
+
