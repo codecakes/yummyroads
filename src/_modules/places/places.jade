@@ -1,33 +1,19 @@
-
 mixin places(spec)
   - spec = spec || {}
   - spec.__class = spec.__class || ''
 
   // div(class=spec.__class)&attributes(attributes)
   //   p This is an example paragraph for the places module
-  div(id='map')
+  .detail-results
+    .detailedCard
+      // each below class has an id= #cardItem-{i}
+      // each item is inside a .w3-container
+    div(id='map')
 
-// mixin nearbyResponseCard(reponse)
-//   - reponse.__class = reponse.__class || ''
-
-//   div(class=spec.__class)&attributes(attributes)
-//     h3= reponse.name
-//     img(src=response.icon)
-//     br
-
-//     if response.photos
-//       img(src=response.photos[0])
-
-//     if response.price_level
-//       p Value for Money
-//       p=response.price_level
 
 mixin responseResults()
   .responseResults.slider-holder.w3-container
     .div-img-holder
     ul.w3-pagination.button-holder
-  .detailedCard
-    // each below class has an id= #cardItem-{i}
-    // each item is inside a .w4-container
 
 

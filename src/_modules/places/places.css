@@ -1,14 +1,14 @@
-#map {
-  height: 400px;
-  max-height: 500px;
-  margin-top: 10px;
-  padding: 5px;
-}
 .card {
   width: 300px;
   height: 333px;
   max-width: 400px;
   max-height: 333px;
+}
+.card > #hide-meta-span {
+  display: none;
+}
+.card > #place-id {
+  display: none;
 }
 .slider-holder {
   width: 800px;
@@ -47,11 +47,15 @@
   position: relative;
   margin-top: 10px;
 }
+.detail-results {
+  display: flex;
+  flex-wrap: wrap;
+}
 .detailedCard {
-  max-width: 800px;
+  max-width: 400px;
   clear: both;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 10em;
+  margin-right: 5em;
   position: relative;
 }
 .detailedCard > div[id^='cardItem'] {
@@ -59,4 +63,13 @@
 }
 .detailedCard > div[id^='cardItem']:target {
   display: block;
+}
+#map {
+  display: none;
+  height: 442px;
+  max-height: 500px;
+  margin-top: 2px;
+  padding: 5px;
+  max-width: 500px;
+  width: 425px;
 }

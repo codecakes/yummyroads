@@ -42,6 +42,7 @@ $(() => {
         // console.log(results);
         places.createSlider(results, $);
         places.slideTransit($);
+        places.cardToMap($, google);
 
         let
           Promises = [],
@@ -60,6 +61,8 @@ $(() => {
                 Promise.all(promiseArr)
                 .then( (Results) => {
                   places.detailedCardAsync(Results, $, google);
+                  places.renderMap(Results, google);
+                  $('#map').show();
                 }, (err) => {
                   console.error(err);
                 });

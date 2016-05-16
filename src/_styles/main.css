@@ -23,6 +23,7 @@ a:active {
   display: flex;
 }
 .search-place {
+  display: flex;
   text-align: center;
   max-width: 400px;
   margin-left: auto;
@@ -34,18 +35,25 @@ a:active {
 }
 .search-place #searchgo {
   color: #00f;
+  position: inherit;
 }
 #map {
   height: 400px;
   max-height: 500px;
-  margin: 0;
-  padding: 0;
+  margin-top: 10px;
+  padding: 5px;
 }
 .card {
   width: 300px;
   height: 333px;
   max-width: 400px;
   max-height: 333px;
+}
+.card > #hide-meta-span {
+  display: none;
+}
+.card > #place-id {
+  display: none;
 }
 .slider-holder {
   width: 800px;
@@ -85,16 +93,16 @@ a:active {
   margin-top: 10px;
 }
 .detailedCard {
-  height: 100px;
+  max-width: 800px;
   clear: both;
   margin-left: auto;
   margin-right: auto;
   position: relative;
 }
-.detailedCard > p {
+.detailedCard > div[id^='cardItem'] {
   display: none;
 }
-.detailedCard > p:target {
+.detailedCard > div[id^='cardItem']:target {
   display: block;
 }
 @import './w3.css';

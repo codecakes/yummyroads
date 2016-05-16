@@ -1,10 +1,4 @@
 // places styles
-#map
-    height: 400px;
-    max-height: 500px;
-    margin-top: 10px;
-    // margin: auto;
-    padding: 5px;
 
 // .responseResults ul
 //     display: flex;
@@ -15,6 +9,10 @@
     height: 333px;
     max-width: 400px;
     max-height: 333px;
+    > #hide-meta-span
+        display none
+    > #place-id
+        display none
 
 // All about slider where results are shown
 .slider-holder
@@ -40,6 +38,7 @@
     -o-transition: left 1s;
     transition: left 1s;
 
+
 .slider-image
     float: left;
     margin: 0px;
@@ -62,19 +61,28 @@
     margin-top: 10px;
 
 // all about showing card results in detail and subsequent functions
-
+.detail-results
+    display: flex;
+    flex-wrap: wrap
 .detailedCard
     // height: 100px;
-    max-width 800px
+    max-width: 400px;
     clear: both;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 10em;
+    margin-right: 5em;
     position: relative;
     > div[id^='cardItem']
       display: none
       &:target
           display:block
-
+#map
+    display none
+    height: 442px;
+    max-height: 500px;
+    margin-top: 2px;
+    padding: 5px;
+    max-width: 500px;
+    width: 425px;
 // all about shifting div-img-holder to left using span selectors
 // mul(span_id, px)
 //     span_id * px
